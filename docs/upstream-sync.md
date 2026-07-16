@@ -112,7 +112,8 @@ a merge and not a behavioral defect in the merged code.
    compliance or code quality?"). The fork's Rails-review insertion plus a
    rationalization row mentioning "Code quality" make the model say "code
    quality" early in its prose, so the grep-based ordering check fails. The
-   skill content is correct: spec compliance → Rails conventions → code quality.
+   skill content is correct (since the v6.1.1 sync: task review covering spec
+   compliance + code quality, then Rails conventions).
 
 2. **`test-subagent-driven-development-integration.sh` Test 3 ("Task
    tracking").** Greps the transcript for a `TodoWrite` tool call. The model

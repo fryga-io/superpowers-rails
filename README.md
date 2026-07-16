@@ -170,7 +170,7 @@ The Pi package loads the Superpowers skills and a small extension that injects t
 
 3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Intent-level steps by default, exact code for migrations and fragile ops.
 
-4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with three-stage review (spec compliance, Rails conventions, code quality), or executes in batches with human checkpoints.
+4. **subagent-driven-development** or **executing-plans** - Activates with plan. Dispatches fresh subagent per task with a task review (spec compliance + code quality) plus a Rails conventions review on Rails projects, or executes in batches with human checkpoints.
 
 5. **test-driven-development** - Activates during implementation. Enforces RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, commit. Deletes code written before tests.
 
@@ -200,7 +200,7 @@ The Pi package loads the Superpowers skills and a small extension that injects t
 - **receiving-code-review** - Responding to feedback
 - **using-git-worktrees** - Parallel development branches
 - **finishing-a-development-branch** - Merge/PR decision workflow
-- **subagent-driven-development** - Fast iteration with three-stage review (spec, Rails conventions, quality)
+- **subagent-driven-development** - Fast iteration with task review (spec + quality) plus Rails conventions review
 
 **Rails**
 - **rails-model/controller/view/policy/job/migration/stimulus/testing-conventions** - Eight convention skills, enforced by the `rails-conventions` PreToolUse hook
