@@ -91,7 +91,6 @@ See `docs/testing.md` for mechanics.
    ./run-skill-tests.sh                 # fast
    ./run-skill-tests.sh --integration   # full (10-30 min)
    ```
-   - `test-requesting-code-review.sh` — validates the code-review consolidation
    - `test-rails-reviewer.sh` — validates the Rails reviewer dispatch (our
      customization; the one with no upstream coverage)
    - `test-subagent-driven-development-integration.sh` — full SDD loop

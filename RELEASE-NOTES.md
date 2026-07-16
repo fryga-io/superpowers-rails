@@ -12,6 +12,90 @@ Fork-specific notes for this sync:
 - Gemini CLI support is removed following upstream (Google EOLed the CLI on 2026-06-18).
 - The fork's `X.Y.Z-rails` scheme now tracks upstream 6.1.1.
 
+## v5.1.2-rails (2026-06-10)
+
+### Plugin Renamed: superpowers → superpowers-rails
+
+The fork now ships under its own identity instead of presenting as upstream. The plugin is `superpowers-rails`, authored by Marcin Ostrowski, and the repo moved to [fryga-io/superpowers-rails](https://github.com/fryga-io/superpowers-rails) (the old `marostr/superpowers` and `marostr/superpowers-rails` URLs redirect).
+
+- **Skill namespace changed** — the namespace follows the plugin name, so every skill is now invoked as `superpowers-rails:<skill>`. ~111 internal references across skills, commands, hooks, and tests were rewritten, including the session-start bootstrap.
+- **Harness manifests renamed too** — Cursor (`.cursor-plugin/plugin.json`), Codex (`.codex-plugin/plugin.json`), Gemini (`gemini-extension.json`), and OpenCode (`package.json`) all become `superpowers-rails` at `5.1.2-rails`.
+- **Fork delta documented** — [docs/fork-changes.md](docs/fork-changes.md) is the maintained list of what differs from upstream.
+
+### New Public Marketplace
+
+New users install from Fryga's marketplace repo:
+
+```
+/plugin marketplace add fryga-io/claude-marketplace
+/plugin install superpowers-rails@fryga
+```
+
+The in-repo dev marketplace keeps the name `superpowers-dev` and now serves the plugin as `superpowers-rails`.
+
+### Existing Installs Keep Working (Legacy Safety Net)
+
+Live testing showed that when an installed plugin's marketplace entry disappears, the install hard-fails on the next marketplace refresh (`✘ failed to load — Error: Plugin superpowers not found in marketplace superpowers-dev`) and its skills vanish from sessions. To prevent that, the `superpowers-dev` marketplace keeps a deprecated `superpowers` entry pinned by `ref` and `sha` to the frozen `legacy` branch.
+
+- Existing `superpowers@superpowers-dev` installs **keep working unchanged**, frozen at 5.1.1-rails. They receive no further updates.
+- Migrating to the new name is **recommended but optional**:
+
+  ```
+  /plugin marketplace update superpowers-dev
+  /plugin uninstall superpowers@superpowers-dev
+  /plugin install superpowers-rails@superpowers-dev
+  ```
+
+  (Or switch to the public `fryga` marketplace entirely — then uninstall `superpowers@superpowers-dev` so you are not running both plugins at once.)
+
+### Versioning Note
+
+The fork's `X.Y.Z-rails` scheme reserves major.minor for the upstream base it tracks (currently upstream v5.1.0), so this release ships as a patch-numbered version despite carrying a big change. These release notes carry the messaging the version number can't.
+
+## v5.1.1-rails (2026-06-02)
+
+### Upstream Sync
+
+Merged upstream v5.1.0, preserving Rails customizations. See the upstream **v5.1.0** notes below for the full set of changes (legacy slash command removals, worktree skills rewrite, code-review consolidation, Codex plugin mirror tooling, OpenCode bootstrap caching, and contributor guidelines for AI agents).
+
+> Numbered `5.1.1-rails` rather than `5.1.0-rails` because this fork already shipped a `v5.1.0-rails` (Intent-Level Plans, 2026-03-16) before upstream released its own 5.1.0.
+
+## v5.0.7-rails (2026-04-03)
+
+### Upstream Sync
+
+Merged upstream v5.0.6 through v5.0.7, preserving Rails customizations.
+
+## v5.0.5-rails (2026-03-24)
+
+### Upstream Sync
+
+Merged upstream v5.0.3 through v5.0.5, preserving Rails customizations.
+
+## v5.1.0-rails (2026-03-16)
+
+### Intent-Level Plans
+
+**Plans now use intent-level steps by default instead of complete code**
+
+- Plan steps describe WHAT to build ("add presence validation for email"), not HOW (full code blocks)
+- Exact code reserved for fragile operations: migrations, data migrations, destructive ops, non-obvious config
+- Plans are 3-5x shorter, reducing context bloat for executors
+- Executor agents read the codebase and convention skills to determine implementation details
+
+### Model Selection for Intent-Level Plans
+
+- Clarified that intent-level plan steps require at least a standard model (not cheap)
+- Cheap model reserved for tasks with exact code in the plan or trivially simple gem calls
+- Added "intent-level implementation tasks" as an explicit category in model selection guidance
+
+### Tested with RED-GREEN-REFACTOR
+
+Both changes validated through TDD-for-skills methodology:
+- 5 baseline scenarios documented agent behavior with complete-code plans
+- Same scenarios re-run with intent-level guidance — agents correctly discriminate between fragile and routine operations
+- Model selection stress-tested with pressure to "pick cheapest possible" — updated guidance prevents inappropriate cheap selections
+
 ## v6.1.1 (2026-07-02)
 
 ### Codex
@@ -157,90 +241,6 @@ Skill-behavior testing moved out of `tests/` into a new `evals/` submodule built
 ### Contributors
 
 Thanks to @mattvanhorn, @nawfal, @Nick Galatis, @silvertakana, @nestorluiscamachopaz, @qer, @mhat, @Stable Genius, @fuleinist, @dev_Hakaze, @robotsnh, Rahul, and @arittr.
-
-## v5.1.2-rails (2026-06-10)
-
-### Plugin Renamed: superpowers → superpowers-rails
-
-The fork now ships under its own identity instead of presenting as upstream. The plugin is `superpowers-rails`, authored by Marcin Ostrowski, and the repo moved to [fryga-io/superpowers-rails](https://github.com/fryga-io/superpowers-rails) (the old `marostr/superpowers` and `marostr/superpowers-rails` URLs redirect).
-
-- **Skill namespace changed** — the namespace follows the plugin name, so every skill is now invoked as `superpowers-rails:<skill>`. ~111 internal references across skills, commands, hooks, and tests were rewritten, including the session-start bootstrap.
-- **Harness manifests renamed too** — Cursor (`.cursor-plugin/plugin.json`), Codex (`.codex-plugin/plugin.json`), Gemini (`gemini-extension.json`), and OpenCode (`package.json`) all become `superpowers-rails` at `5.1.2-rails`.
-- **Fork delta documented** — [docs/fork-changes.md](docs/fork-changes.md) is the maintained list of what differs from upstream.
-
-### New Public Marketplace
-
-New users install from Fryga's marketplace repo:
-
-```
-/plugin marketplace add fryga-io/claude-marketplace
-/plugin install superpowers-rails@fryga
-```
-
-The in-repo dev marketplace keeps the name `superpowers-dev` and now serves the plugin as `superpowers-rails`.
-
-### Existing Installs Keep Working (Legacy Safety Net)
-
-Live testing showed that when an installed plugin's marketplace entry disappears, the install hard-fails on the next marketplace refresh (`✘ failed to load — Error: Plugin superpowers not found in marketplace superpowers-dev`) and its skills vanish from sessions. To prevent that, the `superpowers-dev` marketplace keeps a deprecated `superpowers` entry pinned by `ref` and `sha` to the frozen `legacy` branch.
-
-- Existing `superpowers@superpowers-dev` installs **keep working unchanged**, frozen at 5.1.1-rails. They receive no further updates.
-- Migrating to the new name is **recommended but optional**:
-
-  ```
-  /plugin marketplace update superpowers-dev
-  /plugin uninstall superpowers@superpowers-dev
-  /plugin install superpowers-rails@superpowers-dev
-  ```
-
-  (Or switch to the public `fryga` marketplace entirely — then uninstall `superpowers@superpowers-dev` so you are not running both plugins at once.)
-
-### Versioning Note
-
-The fork's `X.Y.Z-rails` scheme reserves major.minor for the upstream base it tracks (currently upstream v5.1.0), so this release ships as a patch-numbered version despite carrying a big change. These release notes carry the messaging the version number can't.
-
-## v5.1.1-rails (2026-06-02)
-
-### Upstream Sync
-
-Merged upstream v5.1.0, preserving Rails customizations. See the upstream **v5.1.0** notes below for the full set of changes (legacy slash command removals, worktree skills rewrite, code-review consolidation, Codex plugin mirror tooling, OpenCode bootstrap caching, and contributor guidelines for AI agents).
-
-> Numbered `5.1.1-rails` rather than `5.1.0-rails` because this fork already shipped a `v5.1.0-rails` (Intent-Level Plans, 2026-03-16) before upstream released its own 5.1.0.
-
-## v5.0.7-rails (2026-04-03)
-
-### Upstream Sync
-
-Merged upstream v5.0.6 through v5.0.7, preserving Rails customizations.
-
-## v5.0.5-rails (2026-03-24)
-
-### Upstream Sync
-
-Merged upstream v5.0.3 through v5.0.5, preserving Rails customizations.
-
-## v5.1.0-rails (2026-03-16)
-
-### Intent-Level Plans
-
-**Plans now use intent-level steps by default instead of complete code**
-
-- Plan steps describe WHAT to build ("add presence validation for email"), not HOW (full code blocks)
-- Exact code reserved for fragile operations: migrations, data migrations, destructive ops, non-obvious config
-- Plans are 3-5x shorter, reducing context bloat for executors
-- Executor agents read the codebase and convention skills to determine implementation details
-
-### Model Selection for Intent-Level Plans
-
-- Clarified that intent-level plan steps require at least a standard model (not cheap)
-- Cheap model reserved for tasks with exact code in the plan or trivially simple gem calls
-- Added "intent-level implementation tasks" as an explicit category in model selection guidance
-
-### Tested with RED-GREEN-REFACTOR
-
-Both changes validated through TDD-for-skills methodology:
-- 5 baseline scenarios documented agent behavior with complete-code plans
-- Same scenarios re-run with intent-level guidance — agents correctly discriminate between fragile and routine operations
-- Model selection stress-tested with pressure to "pick cheapest possible" — updated guidance prevents inappropriate cheap selections
 
 ## v5.1.0 (2026-04-30)
 
