@@ -48,7 +48,8 @@ unvalidated skill/behavior changes straight to `main`.
 - **Versioning.** Since v5.1.2-rails, all manifests carry the fork version —
   `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
   `package.json`, `.cursor-plugin/plugin.json`, `.codex-plugin/plugin.json`,
-  and `gemini-extension.json` (the set listed in `.version-bump.json`). Pick
+  `.kimi-plugin/plugin.json`, and `gemini-extension.json` (the set listed in
+  `.version-bump.json`). Pick
   the next free `X.Y.Z-rails`, where major.minor tracks the upstream base —
   note the fork once shipped its own `5.1.0-rails` ahead of upstream, so a
   collision is possible (we used `5.1.1-rails` for the upstream v5.1.0 sync).

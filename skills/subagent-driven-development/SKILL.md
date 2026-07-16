@@ -73,7 +73,7 @@ digraph process {
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
     "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, runs bin/ci, commits, self-reviews" [label="no"];
     "Implementer subagent implements, tests, runs bin/ci, commits, self-reviews" -> "Write diff file, dispatch task reviewer subagent (./task-reviewer-prompt.md)";
     "Write diff file, dispatch task reviewer subagent (./task-reviewer-prompt.md)" -> "Task reviewer reports spec ✅ and quality approved?";
     "Task reviewer reports spec ✅ and quality approved?" -> "Dispatch fix subagent for Critical/Important findings" [label="no"];
@@ -299,19 +299,18 @@ superpowers-rails:rails-stimulus-conventions
 superpowers-rails:rails-testing-conventions
 ```
 
-2. Add Rails conventions review after spec compliance:
+2. Add a Rails conventions review after the task review:
 ```
 Review order for Rails:
-1. Spec compliance (./spec-reviewer-prompt.md)
+1. Task review: spec compliance + code quality (./task-reviewer-prompt.md)
 2. Rails conventions (./rails-reviewer-prompt.md)  ← NEW
-3. Code quality (./code-quality-reviewer-prompt.md)
 ```
 
 | Rationalization | Reality |
 |-----------------|---------|
 | "Subagent knows Rails" | Project conventions differ. Load skills. |
-| "Code quality covers conventions" | Different concern. Rails review is specific. |
-| "Too many reviews" | 3 focused reviews catch more than 1 broad review. |
+| "Task review covers conventions" | Different concern. Rails review is specific. |
+| "Too many reviews" | Focused reviews catch more than 1 broad review. |
 
 ## Example Workflow
 

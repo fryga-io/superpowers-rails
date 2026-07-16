@@ -59,7 +59,7 @@ To pin a specific version:
 
 ```json
 {
-  "plugin": ["superpowers-rails@git+https://github.com/fryga-io/superpowers-rails.git#v5.1.2-rails"]
+  "plugin": ["superpowers-rails@git+https://github.com/fryga-io/superpowers-rails.git#v6.1.1-rails"]
 }
 ```
 

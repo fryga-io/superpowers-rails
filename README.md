@@ -3,7 +3,7 @@
 Superpowers Rails brings [Superpowers](https://github.com/obra/superpowers) — Jesse Vincent's software development methodology for coding agents — to Rails. The methodology is his; Superpowers Rails layers Rails on top:
 
 - **Eight Rails convention skills** (models, controllers, views, policies, jobs, migrations, Stimulus, testing), enforced by a PreToolUse hook that blocks Rails file edits until the matching convention skill is loaded
-- **A Rails review stage** in the subagent review pipeline (spec compliance → Rails conventions → code quality), plus a `/codereview` command that runs the full pipeline on demand
+- **A Rails review stage** in the subagent review pipeline (task review covering spec compliance + code quality, then Rails conventions), plus a `/codereview` command that runs the full pipeline on demand
 - **A different planning philosophy**: plans are vertical slices — every slice ships a user-visible capability — written at intent level, with exact code reserved for fragile operations
 
 The full delta against upstream is documented in [docs/fork-changes.md](docs/fork-changes.md); release history is in [RELEASE-NOTES.md](RELEASE-NOTES.md). Report issues at [fryga-io/superpowers-rails](https://github.com/fryga-io/superpowers-rails/issues), not upstream. Superpowers Rails is funded by [fryga](https://fryga.io).
