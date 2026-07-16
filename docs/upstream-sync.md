@@ -86,6 +86,17 @@ See `docs/testing.md` for mechanics.
 1. **Confirm Rails customizations survived the merge** (files present + wired):
    the list under "Conflict-resolution norms" above.
 
+1a. **Execute the SessionStart hook** — `bash -n` is not enough; the v6.1.1
+   sync shipped a hook that passed syntax check but died at runtime on an
+   unbound variable (a fork-side consumer of a block upstream had deleted —
+   the classic merge hazard here is fork lines surviving the deletion of
+   what they consume). All three platform modes must emit valid JSON:
+   ```bash
+   CLAUDE_PLUGIN_ROOT=. bash hooks/session-start | python3 -m json.tool >/dev/null
+   CURSOR_PLUGIN_ROOT=. bash hooks/session-start | python3 -m json.tool >/dev/null
+   COPILOT_CLI=1 bash hooks/session-start | python3 -m json.tool >/dev/null
+   ```
+
 2. **Run the skill test suite:**
    ```bash
    cd tests/claude-code
