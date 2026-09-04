@@ -10,10 +10,38 @@ The full delta against upstream is documented in [docs/fork-changes.md](docs/for
 
 Superpowers is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.
 
+## Table of Contents
+
+- [Quickstart](#quickstart)
+- [How it works](#how-it-works)
+- [Sponsorship](#sponsorship)
+- [Getting Started](#installation)
+  - [Claude Code](#claude-code)
+  - [Antigravity](#antigravity)
+  - [Codex App](#codex-app)
+  - [Codex CLI](#codex-cli)
+  - [Cursor](#cursor)
+  - [Devin CLI](#devin-cli)
+  - [Factory Droid](#factory-droid)
+  - [Gemini CLI](#gemini-cli)
+  - [GitHub Copilot CLI](#github-copilot-cli)
+  - [Grok Build CLI](#grok-build-cli)
+  - [Kimi Code](#kimi-code)
+  - [OpenCode](#opencode)
+  - [Pi](#pi)
+  - [Hermes Agent](#hermes-agent)
+- [The Basic Workflow](#the-basic-workflow)
+- [Community](#community)
+- [What's Inside](#whats-inside)
+- [Philosophy](#philosophy)
+- [Contributing](#contributing)
+- [Updating](#updating)
+- [License](#license)
+- [Visual companion telemetry](#visual-companion-telemetry)
 
 ## Quickstart
 
-Give your agent Superpowers: [Claude Code](#claude-code), [Antigravity](#antigravity), [Factory Droid](#factory-droid), [OpenCode](#opencode), [GitHub Copilot CLI](#github-copilot-cli), [Pi](#pi). (Superpowers Rails is not published to the Codex, Cursor, or Kimi Code marketplaces — see those sections below.)
+Give your agent Superpowers Rails: [Claude Code](#claude-code), [Antigravity](#antigravity), [Devin CLI](#devin-cli), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [GitHub Copilot CLI](#github-copilot-cli), [Hermes Agent](#hermes-agent), [Kimi Code](#kimi-code), [OpenCode](#opencode), [Pi](#pi). (Superpowers Rails is not published to the Codex, Cursor, Grok, or Kimi Code marketplaces — see those sections below.)
 
 ## How it works
 
@@ -88,6 +116,22 @@ Same as Codex App: the Codex plugin marketplace entry is upstream Superpowers, n
 
 The Cursor plugin marketplace entry for "superpowers" is upstream Superpowers, not Superpowers Rails. Superpowers Rails is not published to Cursor's marketplace.
 
+### Devin CLI
+
+Untested on this harness — this mirrors upstream's git-based install, re-pointed at this repo.
+
+- Install the plugin from this repository:
+
+  ```bash
+  devin plugins install fryga-io/superpowers-rails
+  ```
+
+- Update to the latest version with:
+
+  ```bash
+  devin plugins update superpowers-rails
+  ```
+
 ### Factory Droid
 
 Untested on this harness — these commands mirror upstream's git-based install, re-pointed at this repo.
@@ -102,6 +146,22 @@ Untested on this harness — these commands mirror upstream's git-based install,
 
   ```bash
   droid plugin install superpowers-rails@superpowers-rails
+  ```
+
+### Gemini CLI
+
+Untested on this harness — this mirrors upstream's git-based install, re-pointed at this repo.
+
+- Install the extension:
+
+  ```bash
+  gemini extensions install https://github.com/fryga-io/superpowers-rails
+  ```
+
+- Update later:
+
+  ```bash
+  gemini extensions update superpowers-rails
   ```
 
 ### GitHub Copilot CLI
@@ -119,6 +179,10 @@ Untested on this harness — Copilot CLI consumes Claude-Code-style marketplaces
   ```bash
   copilot plugin install superpowers-rails@fryga
   ```
+
+### Grok Build CLI
+
+The [official Grok plugin marketplace](https://github.com/xai-org/plugin-marketplace) serves upstream [Superpowers](https://github.com/obra/superpowers), not Superpowers Rails. Installing `superpowers@xai-official` there gets you upstream, without the Rails additions. Superpowers Rails is not published to the Grok marketplace.
 
 ### Kimi Code
 
@@ -161,6 +225,19 @@ pi -e /path/to/superpowers-rails
 
 The Pi package loads the Superpowers skills and a small extension that injects the `using-superpowers` bootstrap at session startup and again after compaction. Pi has native skills, so no compatibility `Skill` tool is required. Subagent and task-list tools remain optional Pi companion packages.
 
+### Hermes Agent
+
+Untested on this harness — this mirrors upstream's git-based install, re-pointed at this repo.
+
+Install Superpowers Rails as a Hermes plugin from this repository:
+
+```bash
+hermes plugins install fryga-io/superpowers-rails --enable
+```
+
+Restart any active Hermes sessions after installing. Note: Hermes has no
+post-compaction hook, so a very long session that compacts over its first
+turn loses the bootstrap — start a fresh session if skills stop triggering.
 
 ## The Basic Workflow
 
@@ -179,6 +256,14 @@ The Pi package loads the Superpowers skills and a small extension that injects t
 7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+
+## Community
+
+Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
+
+- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
+- **Issues** (Superpowers Rails): https://github.com/fryga-io/superpowers-rails/issues — upstream issues belong at https://github.com/obra/superpowers/issues
+- **Release announcements** (upstream): [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
 
 ## What's Inside
 
@@ -242,11 +327,3 @@ MIT License - see LICENSE file for details
 ## Visual companion telemetry
 
 Because skills and plugins don't provide any feedback to creators, we have no idea how many of you are using Superpowers. By default, the Prime Radiant logo on brainstorming's optional visual companion feature is loaded from our website. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. We don't see your clicks or anything about what you're building. This helps us have a rough idea of how many folks are using Superpowers and which version of Superpowers they're using. It's 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
-
-## Community
-
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
-
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
-- **Issues** (Superpowers Rails): https://github.com/fryga-io/superpowers-rails/issues — upstream issues belong at https://github.com/obra/superpowers/issues
-- **Release announcements** (upstream): [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions

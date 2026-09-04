@@ -1,6 +1,6 @@
 # Fork Changes vs Upstream
 
-This fork tracks [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent. **Current upstream base: v6.1.1.**
+This fork tracks [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent. **Current upstream base: v6.3.0.**
 
 This is the maintained delta — what this fork adds or changes relative to upstream. It is updated on every upstream sync (see [upstream-sync.md](upstream-sync.md)) and every fork release. Derived from `git diff --stat upstream/main...HEAD`.
 
@@ -12,19 +12,25 @@ This is the maintained delta — what this fork adds or changes relative to upst
 
 ## Rails-aware code review
 
-- **`skills/subagent-driven-development/rails-reviewer-prompt.md`**: a dedicated Rails reviewer dispatched as an extra per-task review stage. The pipeline is upstream's task review (spec compliance + code quality) → Rails conventions (if Rails), before the broad whole-branch review at the end. `skills/subagent-driven-development/SKILL.md` wires the stage into the process flowchart; wording in `README.md` and `skills/writing-skills/SKILL.md` is updated to match.
+- **`skills/subagent-driven-development/rails-reviewer-prompt.md`**: a dedicated Rails reviewer dispatched as an extra per-task review stage. The pipeline is upstream's task review (spec compliance + code quality) → Rails conventions (if Rails), before the broad whole-branch review at the end. `skills/subagent-driven-development/SKILL.md` wires the stage into the process flowchart; wording in `README.md` and `skills/writing-skills/SKILL.md` is updated to match. Since the v6.3.0-rails sync the stage sits inside upstream's lifecycle-structured task loop: every path to task completion — clean review, fixed findings, and findings parked at the five-round breaker — routes through the Rails gate before the ledger completion line, and Rails findings enter upstream's resume-based fix loop.
 - **`commands/codereview.md`**: a `/codereview` slash command that runs the full pipeline (task review + Rails conventions + local CI) on demand, outside the SDD loop.
 
 ## Planning philosophy: vertical slices, intent-level steps
 
 - **`skills/writing-plans/SKILL.md`**: rewritten around vertical slices (37signals/Basecamp style). Every slice delivers a user-visible capability end-to-end; horizontal layer-by-layer plans are treated as a red flag. Steps are intent-level (WHAT to build, not full code); exact code is reserved for fragile operations like migrations. Includes a mandatory Rails section (load convention skills while planning) and a scope check.
-- **`skills/subagent-driven-development/SKILL.md` + `implementer-prompt.md`**: model-selection complexity signals adjusted for intent-level plans — cheap models only for tasks with exact code in the plan or trivial gem calls; intent-level tasks need at least a standard model. The implementer runs `bin/ci` before handoff. Upstream's v6.x additions to writing-plans (File Structure mapping, Task Right-Sizing, Bite-Sized Task Granularity with exact-code steps) are not adopted — they encode upstream's exact-code planning philosophy, which the vertical-slice rewrite replaces.
+- **`skills/subagent-driven-development/SKILL.md` + `implementer-prompt.md`**: model-selection complexity signals adjusted for intent-level plans — cheap models only for tasks with exact code in the plan or trivial gem calls; intent-level tasks need at least a standard model. The implementer runs `bin/ci` before handoff. Upstream's v6.x additions to writing-plans (File Structure mapping, Task Right-Sizing, Bite-Sized Task Granularity with exact-code steps) are not adopted — they encode upstream's exact-code planning philosophy, which the vertical-slice rewrite replaces. Upstream's `Spec:` plan-header pointer (v6.3.0) is adopted.
 
 ## Fork tests
 
 - **`tests/claude-code/test-rails-reviewer.sh`**: behavioral smoke test asserting the Rails reviewer stage is dispatched in a Rails project.
 - **`tests/claude-code/test-writing-plans-vertical-slices.sh`**: committed eval asserting writing-plans produces vertical slices, not horizontal layers.
 - Both registered in `tests/claude-code/run-skill-tests.sh` (`--integration`).
+
+## Fork identity: new-harness manifests (v6.3.0-rails)
+
+- **`.devin-plugin/plugin.json`** and **`.hermes-plugin/plugin.yaml`** (both new upstream in v6.3.0) ship rebranded as `superpowers-rails`. `.hermes-plugin/__init__.py`'s bootstrap marker, its `skill_view("…")` examples, and its install instructions carry the fork namespace and repo.
+- README install sections for Devin CLI, Gemini CLI (restored upstream in v6.2.0), and Hermes Agent point at this repo; Grok Build CLI's marketplace serves upstream Superpowers, so it is documented like Codex and Cursor.
+- The harness-manifest tests (`tests/codex/`, `tests/devin/`, `tests/kimi/`, `tests/pi/`, `tests/hermes/`) assert the fork's plugin name rather than upstream's.
 
 ## Fork identity: new-harness manifests (v6.1.1-rails)
 

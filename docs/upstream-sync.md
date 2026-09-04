@@ -20,6 +20,21 @@ unvalidated skill/behavior changes straight to `main`.
    git log --oneline --no-merges main..upstream/main
    git diff --stat main..upstream/main
    ```
+1a. **Check the merge base is where you think it is.** Sync PRs merged with
+   GitHub's squash button land as single-parent commits, so the upstream
+   release they merged is *not* recorded as an ancestor and git falls back to
+   a much older base — the next sync then replays commits already applied and
+   conflicts everywhere. Verify with the last synced upstream release tag:
+   ```bash
+   git merge-base --is-ancestor <last-synced-upstream-sha> main && echo OK
+   git log -1 --format='%h %s' $(git merge-base main upstream/main)
+   ```
+   If it is not an ancestor, record it before merging — this changes no files:
+   ```bash
+   git merge -s ours <last-synced-upstream-sha> -m "Record upstream vX.Y.Z as merged (squash left no merge base)"
+   ```
+   Confirm `git diff --stat main HEAD` is empty afterwards. **Merge sync PRs
+   with a merge commit, not a squash**, to avoid needing this.
 2. Branch from `main`: `git checkout -b merge-upstream-main-vX.Y.Z main`
 3. `git merge upstream/main --no-commit --no-ff` and resolve conflicts (see
    norms below).

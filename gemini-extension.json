@@ -1,6 +1,6 @@
 {
   "name": "superpowers-rails",
   "description": "Rails-focused fork of Superpowers: core skills library with TDD, debugging, collaboration patterns, and Rails conventions",
-  "version": "6.1.1-rails",
+  "version": "6.3.0-rails",
   "contextFileName": "GEMINI.md"
 }

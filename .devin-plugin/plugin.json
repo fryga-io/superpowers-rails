@@ -1,0 +1,23 @@
+{
+  "name": "superpowers-rails",
+  "version": "6.3.0-rails",
+  "description": "Rails-focused fork of Superpowers: an agentic skills framework & software development methodology with planning, TDD, debugging, collaboration workflows, and Rails conventions.",
+  "author": {
+    "name": "Marcin Ostrowski",
+    "email": "marcin@fryga.io"
+  },
+  "homepage": "https://github.com/fryga-io/superpowers-rails",
+  "repository": "https://github.com/fryga-io/superpowers-rails",
+  "license": "MIT",
+  "keywords": [
+    "brainstorming",
+    "subagent-driven-development",
+    "skills",
+    "planning",
+    "tdd",
+    "debugging",
+    "code-review",
+    "workflow",
+    "rails"
+  ]
+}
