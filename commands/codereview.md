@@ -20,7 +20,23 @@ git diff --name-only BASE_SHA HEAD_SHA  # Files changed
 
 ## Step 2: Task Review (spec compliance + code quality)
 
-Generate the review package (`skills/subagent-driven-development/scripts/review-package BASE_SHA HEAD_SHA` — it prints the file path it wrote), then dispatch the task reviewer using the template at `skills/subagent-driven-development/task-reviewer-prompt.md`:
+Write the review package to one file, then dispatch the task reviewer using
+the template at `skills/subagent-driven-development/task-reviewer-prompt.md`.
+`/codereview` runs outside the SDD loop, so there is no plan file and no plan
+workspace — build the file with git directly rather than
+`scripts/review-package`, which requires a plan:
+
+```bash
+out=$(mktemp -t review-package)
+{ echo "# Review package: BASE_SHA..HEAD_SHA"; echo
+  echo "## Commits";      git log --oneline BASE_SHA..HEAD_SHA; echo
+  echo "## Files changed"; git diff --stat BASE_SHA..HEAD_SHA; echo
+  echo "## Diff";          git diff -U10 BASE_SHA..HEAD_SHA
+} > "$out"; echo "$out"
+```
+
+Pass the printed path to the reviewer — it reads the commit list, stat summary,
+and full diff in one call, and the diff never enters your context:
 
 ```
 Task tool (general-purpose):
