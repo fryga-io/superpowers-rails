@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, before merging, or when asked to review recent changes - on Rails projects this also runs the Rails conventions review and local CI
+description: Use when completing tasks, implementing major features, before merging, or when asked to review recent changes
 ---
 
 # Requesting Code Review
@@ -55,8 +55,11 @@ buys nothing:
 
 1. **Code review** — [code-reviewer.md](code-reviewer.md), as above.
 2. **Rails conventions** — dispatch a second `general-purpose` subagent with
-   [rails-reviewer-prompt.md](rails-reviewer-prompt.md),
-   filling `{FILES_CHANGED}`, `{BASE_SHA}`, `{HEAD_SHA}`. It reads the eight
+   [rails-reviewer-prompt.md](rails-reviewer-prompt.md), filling
+   `{FILES_CHANGED}`, `{BASE_SHA}` and `{HEAD_SHA}`. There is no review package
+   here, so delete the template's "If a review package path is provided"
+   sentence and its `{REVIEW_PACKAGE_PATH}` line — never dispatch a prompt with
+   an unfilled placeholder in it. The reviewer reads the eight
    `superpowers-rails:rails-*-conventions` skills and checks the diff against
    them.
 3. **Local CI** — if `bin/ci` exists, run it. It can run while the reviewers

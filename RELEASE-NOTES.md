@@ -8,7 +8,7 @@ Merged upstream v6.2.0 and v6.3.0, preserving Rails customizations. See the upst
 
 Fork-specific notes for this sync:
 
-- **The Rails conventions review is rewired into upstream's new task loop.** Upstream restructured `subagent-driven-development` around a lifecycle with a resume-based fix loop; the Rails reviewer stage now sits between the task review and the ledger completion line, and every path to task completion — clean review, fixed findings, and parked findings at the breaker — routes through it.
+- **The Rails conventions review is rewired into upstream's new task loop.** Upstream restructured `subagent-driven-development` around a lifecycle with a resume-based fix loop; the Rails reviewer stage now sits between the task review and the ledger completion line, and its findings feed upstream's fix rounds rather than a parallel loop of their own — same round counter, same scoped re-review, same five-round breaker.
 - **Model-selection guidance for intent-level plans is preserved** on top of the restructured skill, along with the `bin/ci`-before-handoff requirement.
 - **`writing-plans` keeps the vertical-slice rewrite.** Upstream's `Spec:` plan-header addition is adopted; its exact-code planning additions remain unadopted, as in previous syncs.
 - **New-harness installs are re-pointed at this repo** where a git-based install exists: Devin CLI, Gemini CLI (restored upstream), and Hermes Agent. Grok Build CLI's marketplace serves upstream Superpowers, so it is documented like Codex and Cursor.

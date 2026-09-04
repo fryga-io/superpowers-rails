@@ -8,9 +8,10 @@
 # code review?
 #
 # Falsifiability: delete the "Rails Projects - MANDATORY" section from
-# skills/requesting-code-review/SKILL.md and this test fails. A run in a
-# non-Rails project must NOT plan the Rails stage, which is what the second
-# assertion pins down.
+# skills/requesting-code-review/SKILL.md and this test fails. Both assertions
+# key on the reviewer template's filename rather than on prose, because
+# "no Rails conventions stage applies here" is a CORRECT answer for the
+# non-Rails control that nonetheless contains the words "Rails conventions".
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -54,7 +55,7 @@ echo "Test 1: Rails project — the review plan includes the Rails stage..."
 
 output=$(run_claude "I just finished the invoices index. Review my changes before I merge. Describe the review stages you will run, then stop — do not dispatch anything." "${CLAUDE_PROMPT_TIMEOUT:-300}")
 
-if ! assert_contains "$output" "rails-reviewer-prompt\|rails convention" "Plans the Rails conventions review stage"; then
+if ! assert_contains "$output" "rails-reviewer-prompt" "Plans the Rails conventions review stage"; then
     exit 1
 fi
 
@@ -83,7 +84,10 @@ git commit --quiet -m "add sub"
 
 output=$(run_claude "I just finished the sub() helper. Review my changes before I merge. Describe the review stages you will run, then stop — do not dispatch anything." "${CLAUDE_PROMPT_TIMEOUT:-300}")
 
-if ! assert_not_contains "$output" "rails convention" "No Rails stage on a non-Rails project"; then
+# Assert on the dispatch, not on the words: "no Rails conventions stage applies"
+# is a correct answer that mentions Rails, so grepping for the phrase would fail
+# on correct behavior. Naming the template file means the stage was planned.
+if ! assert_not_contains "$output" "rails-reviewer-prompt" "No Rails stage dispatched on a non-Rails project"; then
     exit 1
 fi
 

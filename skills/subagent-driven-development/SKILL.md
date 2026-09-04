@@ -83,7 +83,6 @@ digraph process {
         "Rails project?" [shape=diamond];
         "Dispatch Rails reviewer subagent (../requesting-code-review/rails-reviewer-prompt.md)" [shape=box];
         "Rails reviewer subagent approves?" [shape=diamond];
-        "Fix Rails findings: resume implementer" [shape=box];
         "Append completion to ledger, mark todo complete" [shape=box];
     }
 
@@ -108,19 +107,19 @@ digraph process {
     "Finding conflicts with plan text?" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no"];
     "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" -> "Dispatch scoped re-review (./re-review-prompt.md)";
     "Dispatch scoped re-review (./re-review-prompt.md)" -> "All findings addressed?";
-    "All findings addressed?" -> "Rails project?" [label="yes"];
+    "All findings addressed?" -> "Append completion to ledger, mark todo complete" [label="yes"];
     "All findings addressed?" -> "R = 5?" [label="no"];
     "R = 5?" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no - next round"];
     "R = 5?" -> "Adjudicate each open finding" [label="yes - breaker trips"];
     "Adjudicate each open finding" -> "Any load-bearing finding?";
     "Any load-bearing finding?" -> "Rule and continue; stop only if every path forward is a guess" [label="yes"];
+    "Rule and continue; stop only if every path forward is a guess" -> "Append completion to ledger, mark todo complete";
     "Any load-bearing finding?" -> "Park findings in ledger with rulings" [label="no"];
-    "Park findings in ledger with rulings" -> "Rails project?";
+    "Park findings in ledger with rulings" -> "Append completion to ledger, mark todo complete";
     "Rails project?" -> "Dispatch Rails reviewer subagent (../requesting-code-review/rails-reviewer-prompt.md)" [label="yes"];
     "Rails project?" -> "Append completion to ledger, mark todo complete" [label="no"];
     "Dispatch Rails reviewer subagent (../requesting-code-review/rails-reviewer-prompt.md)" -> "Rails reviewer subagent approves?";
-    "Rails reviewer subagent approves?" -> "Fix Rails findings: resume implementer" [label="no"];
-    "Fix Rails findings: resume implementer" -> "Dispatch Rails reviewer subagent (../requesting-code-review/rails-reviewer-prompt.md)" [label="re-review"];
+    "Rails reviewer subagent approves?" -> "Fix round R of 5: R≤3 resume implementer; R≥4 fresh implementer, more capable model" [label="no"];
     "Rails reviewer subagent approves?" -> "Append completion to ledger, mark todo complete" [label="yes"];
     "Append completion to ledger, mark todo complete" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
@@ -365,8 +364,12 @@ Template: [task-reviewer-prompt.md](task-reviewer-prompt.md)
 
 **Rails projects:** once the task review passes, dispatch the Rails
 conventions reviewer over the same review package —
-[rails-reviewer-prompt.md](../requesting-code-review/rails-reviewer-prompt.md). Its findings enter
-the same fix loop. See "Rails Projects - MANDATORY" below.
+[rails-reviewer-prompt.md](../requesting-code-review/rails-reviewer-prompt.md).
+Its findings are findings like any other: they enter the fix loop below at
+round R, get verified by the same scoped re-review, and are bounded by the
+same five-round breaker. Do not open a second, separate Rails loop — a
+re-review against the pre-fix review package cannot see the fix, and an
+uncapped loop has no exit. See "Rails Projects - MANDATORY" below.
 
 ### 4. The fix loop
 
