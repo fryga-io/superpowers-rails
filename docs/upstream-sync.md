@@ -57,6 +57,19 @@ unvalidated skill/behavior changes straight to `main`.
 7. Open a PR into the fork's `main` with `--repo fryga-io/superpowers-rails`
    (gh defaults to upstream on forks — always pass `--repo`). Show Marcin the
    complete diff first.
+8. **Merge it with a merge commit, not a squash** (see step 1a for why), then
+   release — a release touches two repos:
+   ```bash
+   git checkout main && git pull --ff-only
+   git tag -a vX.Y.Z-rails -m "vX.Y.Z-rails …" && git push origin vX.Y.Z-rails
+   ```
+   Then bump the plugin's `version` in `.claude-plugin/marketplace.json` of the
+   **separate `fryga-io/claude-marketplace` repo** (marketplace `fryga`). Its
+   `source` is a `.git` URL tracking this repo's `main`, so installs resolve
+   the real version either way — which is exactly why the field rots unnoticed.
+   It had drifted three releases behind by the v6.3.0-rails sync. The in-repo
+   `superpowers-dev` marketplace is bumped by `.version-bump.json` and needs no
+   manual step; only the public one does.
 
 ## Conflict-resolution norms
 
