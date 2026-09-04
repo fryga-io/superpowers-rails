@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Integration Test: rails-reviewer template dispatch
 # Verifies the Rails conventions reviewer — dispatched as a general-purpose
-# subagent via skills/subagent-driven-development/rails-reviewer-prompt.md
+# subagent via skills/requesting-code-review/rails-reviewer-prompt.md
 # (the post-v5.1.0 pattern that replaced the dedicated rails-reviewer agent the
 # plugin previously shipped) — still loads the convention skills and catches planted Rails
 # convention violations.
@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 source "$SCRIPT_DIR/test-helpers.sh"
 
-TEMPLATE="$PLUGIN_DIR/skills/subagent-driven-development/rails-reviewer-prompt.md"
+TEMPLATE="$PLUGIN_DIR/skills/requesting-code-review/rails-reviewer-prompt.md"
 
 echo "========================================"
 echo " Integration Test: rails-reviewer"

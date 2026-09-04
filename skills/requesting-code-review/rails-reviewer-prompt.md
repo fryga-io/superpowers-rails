@@ -4,7 +4,10 @@ Use this template when dispatching a Rails conventions reviewer subagent.
 
 **Purpose:** Verify implementation follows project's Rails conventions
 
-**Only dispatch for Rails projects, after the task review (spec compliance + code quality) passes.**
+**Only dispatch for Rails projects, and only after the review it follows has
+passed** — the task review in subagent-driven-development, the broad code
+review in requesting-code-review. Conventions review is not a substitute for
+either.
 
 ```
 Task tool (general-purpose):

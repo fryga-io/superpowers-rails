@@ -1,0 +1,6 @@
+name: superpowers-rails
+version: 6.3.0-rails
+description: Superpowers Rails skills and workflow bootstrap for Hermes Agent
+author: Marcin Ostrowski
+provides_hooks:
+  - pre_llm_call

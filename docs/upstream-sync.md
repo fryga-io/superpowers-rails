@@ -20,6 +20,21 @@ unvalidated skill/behavior changes straight to `main`.
    git log --oneline --no-merges main..upstream/main
    git diff --stat main..upstream/main
    ```
+1a. **Check the merge base is where you think it is.** Sync PRs merged with
+   GitHub's squash button land as single-parent commits, so the upstream
+   release they merged is *not* recorded as an ancestor and git falls back to
+   a much older base — the next sync then replays commits already applied and
+   conflicts everywhere. Verify with the last synced upstream release tag:
+   ```bash
+   git merge-base --is-ancestor <last-synced-upstream-sha> main && echo OK
+   git log -1 --format='%h %s' $(git merge-base main upstream/main)
+   ```
+   If it is not an ancestor, record it before merging — this changes no files:
+   ```bash
+   git merge -s ours <last-synced-upstream-sha> -m "Record upstream vX.Y.Z as merged (squash left no merge base)"
+   ```
+   Confirm `git diff --stat main HEAD` is empty afterwards. **Merge sync PRs
+   with a merge commit, not a squash**, to avoid needing this.
 2. Branch from `main`: `git checkout -b merge-upstream-main-vX.Y.Z main`
 3. `git merge upstream/main --no-commit --no-ff` and resolve conflicts (see
    norms below).
@@ -68,8 +83,8 @@ unvalidated skill/behavior changes straight to `main`.
   exist and are wired:
   - `skills/rails-*-conventions/` (8 convention skills)
   - `hooks/rails-conventions.sh` + its entry in `hooks/hooks.json`
-  - `skills/subagent-driven-development/rails-reviewer-prompt.md`
-  - `commands/codereview.md`
+  - `skills/requesting-code-review/rails-reviewer-prompt.md`
+  - the Rails section in `skills/requesting-code-review/SKILL.md`
   (Hotwire/Turbo guidance lives in `skills/rails-stimulus-conventions/`, one of
   the 8 above — there is no separate `hotwire-conventions` skill in this repo.)
 - **Adapt to upstream removals.** When upstream deletes something a fork file
@@ -114,18 +129,20 @@ See `docs/testing.md` for mechanics.
 
 ### Known pre-existing test failures (not merge regressions, not blockers)
 
-Two SDD tests fail independently of any upstream sync. Both were verified
-against pre-merge `main` (run the same test from a `git worktree add` of the
-old commit) — old `main` fails them identically, so they are not introduced by
-a merge and not a behavioral defect in the merged code.
+These SDD tests fail independently of any fork change. Each was verified
+against a control — pre-merge `main`, or pristine `upstream/main`, run from a
+`git worktree add` — which fails identically, so they are not introduced by a
+merge and not a behavioral defect in the merged code.
 
-1. **`test-subagent-driven-development.sh` Test 2 ("Workflow ordering").**
-   Asserts on the *word order of a free-text answer* ("what comes first, spec
-   compliance or code quality?"). The fork's Rails-review insertion plus a
-   rationalization row mentioning "Code quality" make the model say "code
-   quality" early in its prose, so the grep-based ordering check fails. The
-   skill content is correct (since the v6.1.1 sync: task review covering spec
-   compliance + code quality, then Rails conventions).
+1. **`test-subagent-driven-development.sh` Test 4 ("Plan reading efficiency").**
+   Greps a free-text answer for `Step 1\|beginning\|start\|Load Plan`. Since
+   upstream v6.2.0 the plan read lives in a section called **Setup**, so the
+   model answers "once, during setup, before Task 1" — correct, and none of the
+   four words. Control: pristine `upstream/main` fails it identically
+   (verified on the v6.3.0 sync).
+
+   Test 2 ("Workflow ordering") was listed here through the v6.1.1 sync and
+   **passes** as of the v6.3.0 sync.
 
 2. **`test-subagent-driven-development-integration.sh` Test 3 ("Task
    tracking").** Greps the transcript for a `TodoWrite` tool call. The model

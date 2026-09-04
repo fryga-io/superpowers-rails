@@ -97,7 +97,8 @@ If the spec covers multiple independent subsystems, it should have been broken i
 
 **Architecture:** [2-3 sentences about approach]
 
-**Spec:** [path to the spec this plan implements]
+**Spec:** [path to the spec/design doc this plan implements — the plan
+argues from the spec, so the spec travels with it; executors read both]
 
 ## Global Constraints
 

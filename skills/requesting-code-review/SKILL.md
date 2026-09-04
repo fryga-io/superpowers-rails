@@ -1,11 +1,11 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+description: Use when completing tasks, implementing major features, before merging, or when asked to review recent changes
 ---
 
 # Requesting Code Review
 
-Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history. This keeps the reviewer focused on the work product, not your thought process, and preserves your own context for continued work.
+Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
 **Core principle:** Review early, review often.
 
@@ -39,11 +39,41 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
 
-**3. Act on feedback:**
+**3. Rails projects — run the Rails stage too (see below).**
+
+**4. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
 - Note Minor issues for later
 - Push back if reviewer is wrong (with reasoning)
+
+## Rails Projects - MANDATORY
+
+On a Rails project the broad review is not the whole review. Run all three —
+the two reviews are read-only and cost one dispatch each, so a partial answer
+buys nothing:
+
+1. **Code review** — [code-reviewer.md](code-reviewer.md), as above.
+2. **Rails conventions** — dispatch a second `general-purpose` subagent with
+   [rails-reviewer-prompt.md](rails-reviewer-prompt.md), filling
+   `{FILES_CHANGED}`, `{BASE_SHA}` and `{HEAD_SHA}`. There is no review package
+   here, so delete the template's "If a review package path is provided"
+   sentence and its `{REVIEW_PACKAGE_PATH}` line — never dispatch a prompt with
+   an unfilled placeholder in it. The reviewer reads the eight
+   `superpowers-rails:rails-*-conventions` skills and checks the diff against
+   them.
+3. **Local CI** — if `bin/ci` exists, run it. It can run while the reviewers
+   work.
+
+Report the three verdicts together — code review, Rails conventions, local CI
+— then the findings, most severe first. Your human partner fixes Critical and
+Important before merging.
+
+| Rationalization | Reality |
+|-----------------|---------|
+| "The code reviewer already looked at the Rails code" | Different concern. It reviews correctness and quality; the Rails stage checks THIS project's conventions. |
+| "Two reviewers is overkill for a small diff" | Two focused reviews catch more than one broad one. The Rails stage reads a diff, not the codebase. |
+| "bin/ci runs in the PR anyway" | Then the reviewers spent their turn on a branch you already know is red. Run it here. |
 
 ## Example
 
@@ -72,20 +102,12 @@ You: [Fix progress indicators]
 [Continue to Task 3]
 ```
 
-## Integration with Workflows
+## Common Rationalizations
 
-**Subagent-Driven Development:**
-- Review after EACH task
-- Catch issues before they compound
-- Fix before moving to next task
-
-**Executing Plans:**
-- Review after each task or at natural checkpoints
-- Get feedback, apply, continue
-
-**Ad-Hoc Development:**
-- Review before merge
-- Review when stuck
+| Excuse | Reality |
+|--------|---------|
+| "I'll just review the diff myself instead of dispatching a reviewer" | You're the coordinator — reviewing the diff inline burns the context window you need to keep driving the work. Dispatch a reviewer subagent: the diff and the evaluation live in its context, and only the findings come back to you. |
+| "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process. |
 
 ## Red Flags
 

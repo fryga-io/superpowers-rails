@@ -45,7 +45,7 @@ function textOf(message) {
 test('package.json declares a pi package with skills and extension resources', async () => {
   const pkg = await readPackageJson();
 
-  assert.equal(pkg.name, 'superpowers');
+  assert.equal(pkg.name, 'superpowers-rails');
   assert.ok(pkg.keywords.includes('pi-package'));
   assert.deepEqual(pkg.pi.skills, ['./skills']);
   assert.deepEqual(pkg.pi.extensions, ['./.pi/extensions/superpowers.ts']);
@@ -122,7 +122,16 @@ test('pi tools reference documents pi-specific mappings', async () => {
   assert.equal(existsSync(piToolsPath), true, 'pi-tools.md should exist');
   const text = await readFile(piToolsPath, 'utf8');
 
-  for (const expected of ['Skill', 'Task', 'TodoWrite', 'read', 'write', 'edit', 'bash']) {
-    assert.match(text, new RegExp(expected));
-  }
+  // Assert against the mapping-table rows only. The surrounding prose mentions
+  // these same tokens, so matching the whole file would still pass if the table
+  // were deleted — the exact regression this test exists to catch.
+  const rows = text.split('\n').filter((line) => line.startsWith('|'));
+  assert.ok(
+    rows.some((row) => /subagent/i.test(row)),
+    'mapping table documents subagent dispatch',
+  );
+  assert.ok(
+    rows.some((row) => /todo|task/i.test(row)),
+    'mapping table documents task tracking',
+  );
 });
