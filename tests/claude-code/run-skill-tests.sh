@@ -83,6 +83,7 @@ tests=(
 integration_tests=(
     "test-subagent-driven-development-integration.sh"
     "test-rails-reviewer.sh"
+    "test-review-rails-stage.sh"
     "test-writing-plans-vertical-slices.sh"
 )
 

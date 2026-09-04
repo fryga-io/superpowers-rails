@@ -83,8 +83,8 @@ unvalidated skill/behavior changes straight to `main`.
   exist and are wired:
   - `skills/rails-*-conventions/` (8 convention skills)
   - `hooks/rails-conventions.sh` + its entry in `hooks/hooks.json`
-  - `skills/subagent-driven-development/rails-reviewer-prompt.md`
-  - `commands/codereview.md`
+  - `skills/requesting-code-review/rails-reviewer-prompt.md`
+  - the Rails section in `skills/requesting-code-review/SKILL.md`
   (Hotwire/Turbo guidance lives in `skills/rails-stimulus-conventions/`, one of
   the 8 above — there is no separate `hotwire-conventions` skill in this repo.)
 - **Adapt to upstream removals.** When upstream deletes something a fork file

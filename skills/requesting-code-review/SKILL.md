@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+description: Use when completing tasks, implementing major features, before merging, or when asked to review recent changes - on Rails projects this also runs the Rails conventions review and local CI
 ---
 
 # Requesting Code Review
@@ -39,11 +39,38 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
 
-**3. Act on feedback:**
+**3. Rails projects — run the Rails stage too (see below).**
+
+**4. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
 - Note Minor issues for later
 - Push back if reviewer is wrong (with reasoning)
+
+## Rails Projects - MANDATORY
+
+On a Rails project the broad review is not the whole review. Run all three —
+the two reviews are read-only and cost one dispatch each, so a partial answer
+buys nothing:
+
+1. **Code review** — [code-reviewer.md](code-reviewer.md), as above.
+2. **Rails conventions** — dispatch a second `general-purpose` subagent with
+   [rails-reviewer-prompt.md](rails-reviewer-prompt.md),
+   filling `{FILES_CHANGED}`, `{BASE_SHA}`, `{HEAD_SHA}`. It reads the eight
+   `superpowers-rails:rails-*-conventions` skills and checks the diff against
+   them.
+3. **Local CI** — if `bin/ci` exists, run it. It can run while the reviewers
+   work.
+
+Report the three verdicts together — code review, Rails conventions, local CI
+— then the findings, most severe first. Your human partner fixes Critical and
+Important before merging.
+
+| Rationalization | Reality |
+|-----------------|---------|
+| "The code reviewer already looked at the Rails code" | Different concern. It reviews correctness and quality; the Rails stage checks THIS project's conventions. |
+| "Two reviewers is overkill for a small diff" | Two focused reviews catch more than one broad one. The Rails stage reads a diff, not the codebase. |
+| "bin/ci runs in the PR anyway" | Then the reviewers spent their turn on a branch you already know is red. Run it here. |
 
 ## Example
 

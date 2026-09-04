@@ -15,6 +15,24 @@ Fork-specific notes for this sync:
 - The fork's `X.Y.Z-rails` scheme now tracks upstream 6.3.0.
 - This sync also repairs the merge base: PR #16 landed as a squash, so upstream v6.1.1 was not recorded as an ancestor. A no-op `-s ours` merge records it, leaving the tree unchanged.
 
+### /codereview Replaced by the Review Skill
+
+The fork's `/codereview` slash command is gone. Its Rails stage now lives in
+`skills/requesting-code-review/SKILL.md`: on a Rails project the on-demand
+review runs the broad code review, then the Rails conventions reviewer, then
+`bin/ci`, and reports all three verdicts.
+
+Upstream removed `commands/` entirely in v5.1.0 ("deprecate slash commands in
+favor of skills") and the fork's command was the only one left in the repo. A
+command fires only when someone types it; the skill fires wherever the
+workflow already asks for a review — after a task, after a feature, before a
+merge. `.cursor-plugin/plugin.json` drops its now-dangling `commands` key.
+
+`rails-reviewer-prompt.md` moves from `skills/subagent-driven-development/`
+to `skills/requesting-code-review/`, next to `code-reviewer.md` — both
+skills dispatch it now, and the review skill is where the reviewer
+templates live.
+
 ## v6.1.1-rails (2026-07-16)
 
 ### Upstream Sync
