@@ -187,8 +187,8 @@ fi
 echo ""
 
 echo "Test 6: implementation works..."
-if grep -q "export function add" "$TEST_PROJECT/src/math.js" 2>/dev/null \
-    && grep -q "export function multiply" "$TEST_PROJECT/src/math.js" 2>/dev/null; then
+if grep -qE "export (function|const) add\b" "$TEST_PROJECT/src/math.js" 2>/dev/null \
+    && grep -qE "export (function|const) multiply\b" "$TEST_PROJECT/src/math.js" 2>/dev/null; then
     echo "  [PASS] add and multiply exported"
 else
     echo "  [FAIL] add/multiply missing from src/math.js"
