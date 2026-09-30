@@ -138,9 +138,19 @@ fi
 echo ""
 
 echo "Test 3: task-done ledgered every slice with a non-empty commit range..."
-ledger_lines=$(grep -oE 'ledger: Task [0-9]+: complete \(commits [0-9a-f]+\.\.[0-9a-f]+' "$SESSION_FILE" | sort -u || true)
+# The transcript also holds the skill's own Example Workflow, whose ledger
+# lines use made-up SHAs; keep only lines whose SHAs exist in this repo.
+ledger_lines=""
+while IFS= read -r candidate; do
+    [ -n "$candidate" ] || continue
+    r=${candidate##*commits }
+    if git -C "$TEST_PROJECT" cat-file -e "${r%%..*}^{commit}" 2>/dev/null \
+        && git -C "$TEST_PROJECT" cat-file -e "${r##*..}^{commit}" 2>/dev/null; then
+        ledger_lines+="$candidate"$'\n'
+    fi
+done < <(grep -oE 'ledger: Task [0-9]+: complete \(commits [0-9a-f]+\.\.[0-9a-f]+' "$SESSION_FILE" | sort -u || true)
 for n in 1 2; do
-    line=$(printf '%s\n' "$ledger_lines" | grep "Task $n:" | head -1 || true)
+    line=$(printf '%s' "$ledger_lines" | grep "Task $n:" | head -1 || true)
     if [ -z "$line" ]; then
         echo "  [FAIL] no task-done ledger line for slice $n"
         FAILED=$((FAILED + 1))
