@@ -1,5 +1,5 @@
 name: superpowers-rails
-version: 6.3.0-rails
+version: 6.4.2-rails
 description: Superpowers Rails skills and workflow bootstrap for Hermes Agent
 author: Marcin Ostrowski
 provides_hooks:

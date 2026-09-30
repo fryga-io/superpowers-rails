@@ -107,6 +107,18 @@ naming and copy rules, platform requirements — one line each, with exact
 values copied verbatim from the spec. Every task's requirements implicitly
 include this section.]
 
+## Review Focus
+
+[The five input classes or failure modes the spec implies but no slice's
+tests exercise that are most likely to bite a person using this software
+— one line each, naming the input or condition and the behavior a
+reasonable person would expect, most likely first. The spec is a vision
+document: it says what the software must do, not everything it will
+meet, and its silence on an input is not permission for that input to
+break the program. Write the list here, once, with the spec in front of
+you. Then, for each line, add the test that pins it to the slice that
+owns the code.]
+
 ---
 ```
 
@@ -140,7 +152,7 @@ Some work is genuinely infrastructural — a refactor, or a shared abstraction n
 
 1. **Fold it** into the first slice that consumes it. (Default.)
 2. If too large to fold, make it the **thinnest increment that is still verifiable on its own** — it carries a test proving the new behavior, even if internal.
-3. Only as a last resort, a standalone groundwork task — and state explicitly why it can't be folded or verified as a slice.
+3. Only as a last resort, a standalone groundwork task — and state explicitly why it can't be folded or verified as a slice. Head it `### Slice N: Groundwork — …` like any other unit, so executors extract it as its own unit.
 
 Never split foundational work back into model / controller / view layers.
 
@@ -169,20 +181,31 @@ After writing the plan, check it against the spec with fresh eyes (a checklist y
 2. **Spec coverage:** Can you point to a slice for each spec requirement? Add a slice for any gap.
 3. **Order:** Does each slice build only on earlier ones?
 4. **Thinness:** Does every slice state intent and point at convention skills by name, rather than restating the spec or scripting HOW step-by-step? Exact code only for migrations, destructive ops, or non-obvious config? If you find spec re-statement or per-step ceremony, cut it. (Adding decomposition, file lists, and end-to-end scenarios is the plan's job — that is not bloat. Don't strip real intent to hit a size target.)
+5. **Review Focus:** For each input class or failure mode the spec implies, is there a slice whose tests exercise it? The five uncovered ones most likely to bite a person go in the Review Focus section, and each line there gets its test added to the owning slice. An empty section means you checked and found none, not that you skipped the check.
+6. **Proportion:** Compare the plan's length to the spec's. A plan several times longer than the spec it implements is a transcript of the program, not a plan. If code blocks are most of the document, cut them back to intent (see Thinness).
 
 Fix issues inline.
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving and self-reviewing the plan, link it for your human partner
+to read. If they have already explicitly supplied an execution method, ask
+them to review the plan and confirm it captures what they want; wait for that
+review before implementation, then use the preserved method. Otherwise, ask
+them to review the plan and choose an execution method before implementation.
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**When no execution method has already been supplied:**
 
-**1. Subagent-Driven (recommended)** - one fresh subagent per slice, review between slices, fast iteration
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Which execution approach would you prefer?**
 
-**2. Inline Execution** - execute slices in this session with checkpoints
+- **Subagent-driven** - A fresh subagent implements each slice and a fresh reviewer checks it (plus the Rails conventions reviewer on Rails projects) before the next one starts, then a whole-branch review at the end. Most thorough; costs a fresh context per slice and per review.
+- **Native** - I implement every slice myself in this session, then one fresh reviewer on the most capable model checks the whole branch (plus the Rails conventions reviewer on Rails projects). Cheapest and fastest; no independent review until the end.
 
-**Which approach?"**
+**For this plan I recommend <one of the two>, because <one sentence from the plan: how much the slices build on each other, how many there are, what a shipped mistake would cost>. Does the plan capture what you want, and which approach should we use?"**
 
-**If Subagent-Driven chosen:** **REQUIRED SUB-SKILL:** Use superpowers-rails:subagent-driven-development
-**If Inline Execution chosen:** **REQUIRED SUB-SKILL:** Use superpowers-rails:executing-plans
+**When an execution method has already been supplied:**
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Does it capture what you want?"**
+
+**If Subagent-driven chosen:** **REQUIRED SUB-SKILL:** Use superpowers-rails:subagent-driven-development
+**If Native chosen:** **REQUIRED SUB-SKILL:** Use superpowers-rails:executing-plans

@@ -9,7 +9,7 @@
     {
       "name": "superpowers-rails",
       "description": "Rails-focused fork of Superpowers: core skills library for Claude Code with TDD, debugging, collaboration patterns, and Rails conventions",
-      "version": "6.3.0-rails",
+      "version": "6.4.2-rails",
       "source": "./",
       "author": {
         "name": "Marcin Ostrowski",

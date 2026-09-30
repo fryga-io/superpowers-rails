@@ -1,6 +1,6 @@
 {
   "name": "superpowers-rails",
-  "version": "6.3.0-rails",
+  "version": "6.4.2-rails",
   "description": "Rails-focused fork of Superpowers: an agentic skills framework & software development methodology with planning, TDD, debugging, collaboration workflows, and Rails conventions.",
   "author": {
     "name": "Marcin Ostrowski",

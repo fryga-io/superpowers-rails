@@ -21,20 +21,23 @@ n=$2
 if [ $# -eq 3 ]; then
   out=$3
 else
-  dir=$("$(cd "$(dirname "$0")" && pwd)/sdd-workspace" "$plan")
+  # Invoke via bash rather than direct exec: some extractors (Python zipfile)
+  # strip Unix exec bits when unpacking marketplace packages (#2040).
+  dir=$("${BASH:-bash}" "$(cd "$(dirname "$0")" && pwd)/sdd-workspace" "$plan")
   out="$dir/task-${n}-brief.md"
 fi
 
 awk -v n="$n" '
   /^```/ { infence = !infence }
-  !infence && /^#+[ \t]+Task[ \t]+[0-9]+/ {
-    intask = ($0 ~ ("^#+[ \t]+Task[ \t]+" n "([^0-9]|$)"))
+  # superpowers-rails: writing-plans heads units "Slice N", upstream "Task N".
+  !infence && /^#+[ \t]+(Task|Slice)[ \t]+[0-9]+/ {
+    intask = ($0 ~ ("^#+[ \t]+(Task|Slice)[ \t]+" n "([^0-9]|$)"))
   }
   intask { print }
 ' "$plan" > "$out"
 
 if [ ! -s "$out" ]; then
-  echo "task ${n} not found in ${plan} (no heading matching 'Task ${n}')" >&2
+  echo "task ${n} not found in ${plan} (no heading matching 'Task ${n}' or 'Slice ${n}')" >&2
   exit 3
 fi
 

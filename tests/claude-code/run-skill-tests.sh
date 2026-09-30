@@ -76,6 +76,7 @@ done
 tests=(
     "test-worktree-path-policy.sh"
     "test-sdd-workspace.sh"
+    "test-executing-plans-scripts.sh"
     "test-subagent-driven-development.sh"
 )
 
@@ -85,6 +86,7 @@ integration_tests=(
     "test-rails-reviewer.sh"
     "test-review-rails-stage.sh"
     "test-writing-plans-vertical-slices.sh"
+    "test-executing-plans-slices-integration.sh"
 )
 
 # Add integration tests if requested
