@@ -10,6 +10,8 @@ Fork-specific notes for this sync:
 
 - **`executing-plans` is upstream's rebuilt Native mode, plus Rails.** Batch execution with human checkpoints is gone. On Rails projects the skill loads all eight convention skills before Task 1 and dispatches the Rails conventions reviewer alongside the final whole-branch review; its findings join the same single fix pass.
 - **`writing-plans` keeps the vertical-slice rewrite** and adopts three upstream v6.4.x pieces in slice vocabulary: the Review Focus section, the Review Focus and Proportion self-review checks, and the new execution handoff (review the plan, then Subagent-driven or Native with a per-plan recommendation). Upstream's step-level "What a Step Contains" rules are not adopted.
+- **`task-brief` now finds `Slice N` headings.** Since v6.3.0-rails, SDD's `task-brief` matched only upstream's `Task N` headings and exited with "task 1 not found" on plans from the fork's writing-plans; Native execution's `task-start` uses the same script.
+- **`diagnosing-superpowers` searches and files issues on this repo**, not upstream.
 - **`AGENTS.md` replaces `CLAUDE.md`**, following upstream; the fork's note and namespace line move with it.
 - **New-harness installs are re-pointed at this repo:** Muse (manifests rebranded, Rails skills listed) and Qwen Code.
 - The fork's `X.Y.Z-rails` scheme now tracks upstream 6.4.2.

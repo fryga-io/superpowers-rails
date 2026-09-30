@@ -19,6 +19,7 @@ This is the maintained delta — what this fork adds or changes relative to upst
 
 - **`skills/writing-plans/SKILL.md`**: rewritten around vertical slices (37signals/Basecamp style). Every slice delivers a user-visible capability end-to-end; horizontal layer-by-layer plans are treated as a red flag. Steps are intent-level (WHAT to build, not full code); exact code is reserved for fragile operations like migrations. Includes a mandatory Rails section (load convention skills while planning) and a scope check.
 - **`skills/subagent-driven-development/SKILL.md` + `implementer-prompt.md`**: model-selection complexity signals adjusted for intent-level plans — cheap models only for tasks with exact code in the plan or trivial gem calls; intent-level tasks need at least a standard model. The implementer runs `bin/ci` before handoff. Upstream's v6.x additions to writing-plans (File Structure mapping, Task Right-Sizing, Bite-Sized Task Granularity with exact-code steps) are not adopted — they encode upstream's exact-code planning philosophy, which the vertical-slice rewrite replaces. Upstream's `Spec:` plan-header pointer (v6.3.0) is adopted. From v6.4.x, the Review Focus plan section, the Review Focus and Proportion self-review checks, and the new execution handoff (your human partner reviews the plan, then picks Subagent-driven or Native from a per-plan recommendation) are adopted in slice vocabulary; upstream's "What a Step Contains" step-level rules are not.
+- **`skills/subagent-driven-development/scripts/task-brief`**: matches `Slice N` headings as well as upstream's `Task N`, so SDD and executing-plans' `task-start` can extract a unit from a slice-headed plan (covered in `tests/claude-code/test-sdd-workspace.sh`).
 
 ## Fork tests
 
@@ -30,6 +31,7 @@ This is the maintained delta — what this fork adds or changes relative to upst
 
 - **`.muse-plugin/plugin.json`** and **`.muse-plugin/marketplace.json`** (new upstream in v6.4.1) ship rebranded as `superpowers-rails`; the Muse `capabilities.skills` list also carries the eight Rails convention skills. Both are in `.version-bump.json`.
 - README install sections for Qwen Code and Muse point at this repo.
+- **`skills/diagnosing-superpowers/references/github-issues.md`** searches and files issues on `fryga-io/superpowers-rails`, not upstream.
 
 ## Fork identity: new-harness manifests (v6.3.0-rails)
 

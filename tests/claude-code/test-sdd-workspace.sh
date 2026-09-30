@@ -129,6 +129,19 @@ PLAN
         echo "    got: $brief_path"
     fi
 
+    # --- task-brief extracts slice-headed plans (superpowers-rails writing-plans) ---
+    printf '# Plan\n\n### Slice 1: A member can view\none\n\n### Slice 2: A member can add\ntwo\n\n### Slice 12: Later\ntwelve\n' \
+        > "$repo/plan-slices.md"
+    local slice_brief
+    ( cd "$repo" && "$SDD_SCRIPTS/task-brief" plan-slices.md 2 "$repo/slice-2.md" >/dev/null 2>&1 ) || true
+    slice_brief="$(cat "$repo/slice-2.md" 2>/dev/null || true)"
+    if [[ "$slice_brief" == *"two"* && "$slice_brief" != *"one"* && "$slice_brief" != *"twelve"* ]]; then
+        pass "task-brief extracts one slice from a slice-headed plan"
+    else
+        fail "task-brief extracts one slice from a slice-headed plan"
+        echo "    got: $slice_brief"
+    fi
+
     # --- review-package takes the plan first and lands in its directory ---
     local git_id=(-c user.email=t@example.com -c user.name=t -c commit.gpgsign=false)
     ( cd "$repo" \
