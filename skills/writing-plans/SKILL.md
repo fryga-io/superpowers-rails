@@ -152,7 +152,7 @@ Some work is genuinely infrastructural — a refactor, or a shared abstraction n
 
 1. **Fold it** into the first slice that consumes it. (Default.)
 2. If too large to fold, make it the **thinnest increment that is still verifiable on its own** — it carries a test proving the new behavior, even if internal.
-3. Only as a last resort, a standalone groundwork task — and state explicitly why it can't be folded or verified as a slice.
+3. Only as a last resort, a standalone groundwork task — and state explicitly why it can't be folded or verified as a slice. Head it `### Slice N: Groundwork — …` like any other unit, so executors extract it as its own unit.
 
 Never split foundational work back into model / controller / view layers.
 

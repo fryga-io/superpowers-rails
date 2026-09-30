@@ -169,6 +169,16 @@ superpowers-rails:rails-testing-conventions
 | "I already know Rails conventions" | These are PROJECT conventions. Load them. |
 | "Plan already covers conventions" | Plan is architecture. Skills are implementation. |
 
+**Slice plans (superpowers-rails:writing-plans):** units are headed
+`Slice N` and carry no `Expected:` lines, Interfaces blocks, or commit
+steps. Read `Slice N` wherever this skill says `Task N` —
+`task-start PLAN_FILE N` extracts it. The slice's end-to-end test stands in
+for the `Expected:` lines: write it first, watch it fail, build the slice to
+green. The pre-flight scan compares the slices' `Touches:` lists instead of
+Interfaces blocks: one row for every file two slices both touch. Commit the
+slice once its end-to-end test is green, before `task-done` — a range with
+no commits is not a completed slice.
+
 Before Task 1, scan the plan for conflicts between tasks. The plan's
 Interfaces blocks tell you where to look: for every task that consumes
 what an earlier task produces, one ledger row — the two tasks, what one
