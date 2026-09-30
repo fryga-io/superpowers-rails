@@ -43,7 +43,7 @@ unvalidated skill/behavior changes straight to `main`.
    follows the plugin name). Then re-run the stale-ref grep — it must return
    nothing:
    ```bash
-   grep -rn "superpowers:[a-z-]" skills/ commands/ hooks/ tests/ CLAUDE.md .github/
+   grep -rn "superpowers:[a-z-]" skills/ hooks/ tests/ AGENTS.md .github/
    ```
    The pattern `superpowers:[a-z-]` only matches the old namespace (a `:` right
    after `superpowers`); it never matches `superpowers-rails:` (a `-` follows),

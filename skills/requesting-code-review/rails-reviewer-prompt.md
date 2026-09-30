@@ -6,8 +6,10 @@ Use this template when dispatching a Rails conventions reviewer subagent.
 
 **Only dispatch for Rails projects, and only after the review it follows has
 passed** — the task review in subagent-driven-development, the broad code
-review in requesting-code-review. Conventions review is not a substitute for
-either.
+review in requesting-code-review. The exception is executing-plans, whose
+final whole-branch review has no pass/fail gate: there it is dispatched
+alongside the code reviewer, over the same package. Conventions review is not
+a substitute for any of them.
 
 ```
 Task tool (general-purpose):

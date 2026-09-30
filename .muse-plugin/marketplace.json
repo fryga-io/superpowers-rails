@@ -1,0 +1,20 @@
+{
+  "name": "superpowers-dev",
+  "description": "Development marketplace for the Superpowers Rails skills library",
+  "owner": {
+    "name": "Marcin Ostrowski",
+    "email": "marcin@fryga.io"
+  },
+  "plugins": [
+    {
+      "name": "superpowers-rails",
+      "description": "Rails-focused fork of Superpowers for Muse: core skills library with TDD, debugging, collaboration patterns, and Rails conventions",
+      "version": "6.4.2-rails",
+      "source": "./",
+      "author": {
+        "name": "Marcin Ostrowski",
+        "email": "marcin@fryga.io"
+      }
+    }
+  ]
+}

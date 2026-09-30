@@ -1,6 +1,6 @@
 # Fork Changes vs Upstream
 
-This fork tracks [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent. **Current upstream base: v6.3.0.**
+This fork tracks [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent. **Current upstream base: v6.4.2.**
 
 This is the maintained delta — what this fork adds or changes relative to upstream. It is updated on every upstream sync (see [upstream-sync.md](upstream-sync.md)) and every fork release. Derived from `git diff --stat upstream/main...HEAD`.
 
@@ -8,7 +8,7 @@ This is the maintained delta — what this fork adds or changes relative to upst
 
 - **Eight Rails convention skills** (`skills/rails-*-conventions/`): model, controller, view, policy, job, migration, stimulus, testing. Each encodes project conventions (e.g. State as Records, Pundit policies, Turbo/Stimulus boundaries, RSpec patterns) that agents load before touching the corresponding file type.
 - **`hooks/rails-conventions.sh`** + its `PreToolUse` entry in `hooks/hooks.json`: a deny-until-skill-loaded gate. Edits/writes to Rails files are blocked until the matching convention skill appears in the session transcript.
-- **`skills/executing-plans/SKILL.md`**: for Rails projects, mandates loading all eight convention skills before the first task and adds a Rails-conventions check to each batch review.
+- **`skills/executing-plans/SKILL.md`**: for Rails projects, mandates loading all eight convention skills before Task 1. Since v6.4.2-rails the skill is upstream's rebuilt inline ("Native") execution — no batches, no check-ins, one whole-branch review at the end; the fork dispatches the Rails conventions reviewer alongside that final review, and its findings join the same single fix pass. `rails-reviewer-prompt.md` names this as the exception to its "only after the review it follows has passed" rule.
 
 ## Rails-aware code review
 
@@ -18,13 +18,18 @@ This is the maintained delta — what this fork adds or changes relative to upst
 ## Planning philosophy: vertical slices, intent-level steps
 
 - **`skills/writing-plans/SKILL.md`**: rewritten around vertical slices (37signals/Basecamp style). Every slice delivers a user-visible capability end-to-end; horizontal layer-by-layer plans are treated as a red flag. Steps are intent-level (WHAT to build, not full code); exact code is reserved for fragile operations like migrations. Includes a mandatory Rails section (load convention skills while planning) and a scope check.
-- **`skills/subagent-driven-development/SKILL.md` + `implementer-prompt.md`**: model-selection complexity signals adjusted for intent-level plans — cheap models only for tasks with exact code in the plan or trivial gem calls; intent-level tasks need at least a standard model. The implementer runs `bin/ci` before handoff. Upstream's v6.x additions to writing-plans (File Structure mapping, Task Right-Sizing, Bite-Sized Task Granularity with exact-code steps) are not adopted — they encode upstream's exact-code planning philosophy, which the vertical-slice rewrite replaces. Upstream's `Spec:` plan-header pointer (v6.3.0) is adopted.
+- **`skills/subagent-driven-development/SKILL.md` + `implementer-prompt.md`**: model-selection complexity signals adjusted for intent-level plans — cheap models only for tasks with exact code in the plan or trivial gem calls; intent-level tasks need at least a standard model. The implementer runs `bin/ci` before handoff. Upstream's v6.x additions to writing-plans (File Structure mapping, Task Right-Sizing, Bite-Sized Task Granularity with exact-code steps) are not adopted — they encode upstream's exact-code planning philosophy, which the vertical-slice rewrite replaces. Upstream's `Spec:` plan-header pointer (v6.3.0) is adopted. From v6.4.x, the Review Focus plan section, the Review Focus and Proportion self-review checks, and the new execution handoff (your human partner reviews the plan, then picks Subagent-driven or Native from a per-plan recommendation) are adopted in slice vocabulary; upstream's "What a Step Contains" step-level rules are not.
 
 ## Fork tests
 
 - **`tests/claude-code/test-rails-reviewer.sh`**: behavioral smoke test asserting the Rails reviewer stage is dispatched in a Rails project.
 - **`tests/claude-code/test-writing-plans-vertical-slices.sh`**: committed eval asserting writing-plans produces vertical slices, not horizontal layers.
 - Both registered in `tests/claude-code/run-skill-tests.sh` (`--integration`).
+
+## Fork identity: new-harness manifests (v6.4.2-rails)
+
+- **`.muse-plugin/plugin.json`** and **`.muse-plugin/marketplace.json`** (new upstream in v6.4.1) ship rebranded as `superpowers-rails`; the Muse `capabilities.skills` list also carries the eight Rails convention skills. Both are in `.version-bump.json`.
+- README install sections for Qwen Code and Muse point at this repo.
 
 ## Fork identity: new-harness manifests (v6.3.0-rails)
 
@@ -52,6 +57,6 @@ This is the maintained delta — what this fork adds or changes relative to upst
 
 ## What is NOT a fork change
 
-- **`CLAUDE.md` / `AGENTS.md` contributor policy** (AI-agent guidelines, disclosure requirements, dev-branch targeting) is upstream content — the fork's only deltas are one namespace line there and a fork note in `.github/PULL_REQUEST_TEMPLATE.md` (PRs against this fork target `main`; there is no `dev` branch).
+- **`AGENTS.md` contributor policy** (AI-agent guidelines, disclosure requirements, dev-branch targeting) is upstream content — upstream made `AGENTS.md` canonical and removed `CLAUDE.md` in v6.4.1. The fork's only deltas are one namespace line and a fork note there, and a fork note in `.github/PULL_REQUEST_TEMPLATE.md` (PRs against this fork target `main`; there is no `dev` branch).
 - **`LICENSE`** is untouched: MIT, Jesse Vincent's copyright.
 - **`scripts/sync-to-codex-plugin.sh`** is upstream's Codex mirror tooling, left as-is.
